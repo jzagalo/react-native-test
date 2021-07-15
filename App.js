@@ -8,75 +8,60 @@ import { RestaurantsScreen } from './screens/RestaurantsScreen'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-
-const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator();
-
-const Tab1 = () => (<Text> Tab 1 </Text>)
-const Tab2 = () => (<Text> Tab 2 </Text>)
-const Tab3 = () => (<Text> Tab 3 </Text>)
-
-const screenOptionsNext =({ route }) => ({
-  tabBarIcon: ({ focused, color, size }) => {
-    let iconName;
-
-    if (route.name === 'Home') {
-      iconName = focused
-        ? 'ios-information-circle'
-        : 'ios-information-circle-outline';
-    } else if (route.name === 'Settings') {
-      iconName = focused ? 'ios-list-box' : 'ios-list';
-    }
-
-    // You can return any component that you like here!
-    return <Ionicons name={iconName} size={size} color={color} />;
-  },
-});
-
-const tabBarOptions = {
-  activeTintColor: 'tomato',
-  inactiveTintColor: 'gray',
-};
-
-const MyTabs = () => {
+function HomeScreen({ navigation }) {
   return (
-      <Tab.Navigator screenOptions={screenOptionsNext} tabBarOptions={tabBarOptions}>
-        <Tab.Screen name="Tab1" component={Tab1} />
-        <Tab.Screen name="Tab2" component={Tab2} />
-        <Tab.Screen name="Tab3" component={Tab3} />
-      </Tab.Navigator>    
-  )
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text style={{ fontSize: 30 }}>This is the home screen!</Text>
+      <Button
+        onPress={() => navigation.navigate('MyModal')}
+        title="Open Modal"
+      />
+    </View>
+  );
 }
 
-const screenOptions = {
-  headerStyle: {
-    backgroundColor: '#f4511e',
-  },
-  headerTintColor: '#fff',
-  headerTitleStyle: {
-    fontWeight: 'bold',
-  },
-};
-
-function App() {
+function DetailsScreen() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="HomeTab" screenOptions={screenOptions}>
-        <Stack.Screen name="HomeTab" component={MyTabs} />
-        <Stack.Screen name="People" component={PeopleScreen} options={{ title: 'My People' }} />
-        <Stack.Screen name="Decision" component={DecisionScreen} 
-            options={{          
-              headerRight: () => (
-                <Button
-                  onPress={() => alert('This is a button!')}
-                  title="Info"                  
-                />
-              ),
-        }} />
-        <Stack.Screen name="Restaurant" component={RestaurantsScreen} />
-      </Stack.Navigator>
+    <View>
+      <Text>Details</Text>
+    </View>
+  );
+}
+
+function ModalScreen({ navigation }) {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text style={{ fontSize: 30 }}>This is a modal!</Text>
+      <Button onPress={() => navigation.goBack()} title="Dismiss" />
+    </View>
+  );
+}
+
+const MainStack = createStackNavigator();
+const RootStack = createStackNavigator();
+
+function MainStackScreen() {
+  return (
+    <MainStack.Navigator>
+      <MainStack.Screen name="Home" component={HomeScreen} />
+      <MainStack.Screen name="Details" component={DetailsScreen} />
+    </MainStack.Navigator>
+  );
+}
+
+function RootStackScreen() {
+  return (
+  <NavigationContainer>
+      <RootStack.Navigator mode="modal">
+        <RootStack.Screen
+          name="Main"
+          component={MainStackScreen}
+          options={{ headerShown: false }}
+        />
+        <RootStack.Screen name="MyModal" component={ModalScreen} />
+      </RootStack.Navigator>
     </NavigationContainer>
   );
 }
 
-export default App;
+export default RootStackScreen;
