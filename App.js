@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, StatusBar, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { PeopleScreen } from './screens/PeopleScreen'
@@ -8,77 +8,53 @@ import { RestaurantsScreen } from './screens/RestaurantsScreen'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import SafeAreaView from 'react-native-safe-area-view';
 
-function Home({ navigation }) {
+
+
+function Screen1({ navigation }) {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <SafeAreaView style={[styles.container, { backgroundColor: '#6a51ae' }]}>
+      <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
+      <Text style={{ color: '#fff' }}>Light Screen</Text>
       <Button
-        onPress={() => navigation.navigate('Notifications')}
-        title="Go to notifications"
+        title="Next screen"
+        onPress={() => navigation.navigate('Screen2')}
+        color="#000"
       />
-    </View>
+    </SafeAreaView>
   );
 }
 
-function Feed({ navigation }) {
+function Screen2({ navigation }) {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Button onPress={() => navigation.navigate("Home")} title="Profile" />
-    </View>
-  );
-}
-
-function Notifications({ navigation }) {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Button onPress={() => navigation.navigate("FeedGI")} title="Go back home" />
-    </View>
-  );
-}
-
-function Profile({ navigation }) {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <SafeAreaView style={[styles.container, { backgroundColor: '#ecf0f1' }]}>
+      <StatusBar barStyle="dark-content" backgroundColor="#ecf0f1" />
+      <Text>Dark Screen</Text>
       <Button
-        onPress={() => navigation.navigate('Settings')}
-        title="Go to Settings"
+        title="Next screen"
+        onPress={() => navigation.navigate('Screen1')}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 
-function Settings({ navigation }) {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Button onPress={() => navigation.navigate("Profile")} title="Profile" />
-    </View>
-  );
-}
-
-
-
-
-const Tab = createBottomTabNavigator();
-const Stack = createBottomTabNavigator();
-
-function HomeTabs() {
-  return (
-    <Tab.Navigator>
-      <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Feed" component={Feed} />
-      <Tab.Screen name="Notifications" component={Notifications} />
-    </Tab.Navigator>
-  );
-}
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeTabs} />
-        <Stack.Screen name="Profile" component={Profile} />
-        <Stack.Screen name="Settings" component={Settings} />
-      </Stack.Navigator>     
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <Stack.Navigator headerMode="none">
+          <Stack.Screen name="Screen1" component={Screen1} />
+          <Stack.Screen name="Screen2" component={Screen2} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+});
