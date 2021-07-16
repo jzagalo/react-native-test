@@ -11,50 +11,49 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import SafeAreaView from 'react-native-safe-area-view';
 
+const Tab = createBottomTabNavigator();
+const HomeStack = createStackNavigator();
+const SettingsStack = createStackNavigator();
 
+function A() {
+  return <View />;
+}
 
-function Screen1({ navigation }) {
+function B() {
+  return <View />;
+}
+
+function HomeStackScreen() {
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: '#6a51ae' }]}>
-      <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
-      <Text style={{ color: '#fff' }}>Light Screen</Text>
-      <Button
-        title="Next screen"
-        onPress={() => navigation.navigate('Screen2')}
-        color="#000"
+    <HomeStack.Navigator>
+      <HomeStack.Screen
+        name="A"
+        component={A}
+        options={{ tabBarLabel: 'Home!' }}
       />
-    </SafeAreaView>
+    </HomeStack.Navigator>
   );
 }
 
-function Screen2({ navigation }) {
+function SettingsStackScreen() {
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: '#ecf0f1' }]}>
-      <StatusBar barStyle="dark-content" backgroundColor="#ecf0f1" />
-      <Text>Dark Screen</Text>
-      <Button
-        title="Next screen"
-        onPress={() => navigation.navigate('Screen1')}
+    <SettingsStack.Navigator>
+      <SettingsStack.Screen
+        name="B"
+        component={B}
+        options={{ tabBarLabel: 'Settings!' }}
       />
-    </SafeAreaView>
+    </SettingsStack.Navigator>
   );
 }
-
-const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <SafeAreaProvider>
-      <NavigationContainer>
-        <Stack.Navigator headerMode="none">
-          <Stack.Screen name="Screen1" component={Screen1} />
-          <Stack.Screen name="Screen2" component={Screen2} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </SafeAreaProvider>
+    <NavigationContainer>
+      <Tab.Navigator>
+        <Tab.Screen name="Home" component={HomeStackScreen} />
+        <Tab.Screen name="Settings" component={SettingsStackScreen} />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-});
