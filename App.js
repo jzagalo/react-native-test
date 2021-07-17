@@ -16,11 +16,11 @@ const HomeStack = createStackNavigator();
 const SettingsStack = createStackNavigator();
 
 function A() {
-  return <View />;
+  return <Text>A</Text> ;
 }
 
 function B() {
-  return <View />;
+  return <Text>B</Text> ;
 }
 
 function HomeStackScreen() {
@@ -49,11 +49,14 @@ function SettingsStackScreen() {
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="Home" component={HomeStackScreen} />
-        <Tab.Screen name="Settings" component={SettingsStackScreen} />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <NavigationContainer>     
+        <Tab.Navigator>
+          <Tab.Screen name="Home" component={HomeStackScreen} />
+          <Tab.Screen name="Settings" component={SettingsStackScreen} />
+        </Tab.Navigator> 
+      </NavigationContainer>
+    </SafeAreaProvider>
+    
   );
 }
