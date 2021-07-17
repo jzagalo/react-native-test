@@ -11,52 +11,31 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import SafeAreaView from 'react-native-safe-area-view';
 
+function Demo() {
+  return (
+    <View style={{ flex: 1, justifyContent: 'space-between', alignItems: 'center' }}>
+      <Text>This is top text.</Text>
+      <Text>This is bottom text.</Text>
+    </View>
+  );
+}
+const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-const HomeStack = createStackNavigator();
-const SettingsStack = createStackNavigator();
-
-function A() {
-  return <Text>A</Text> ;
-}
-
-function B() {
-  return <Text>B</Text> ;
-}
-
-function HomeStackScreen() {
-  return (
-    <HomeStack.Navigator>
-      <HomeStack.Screen
-        name="A"
-        component={A}
-        options={{ tabBarLabel: 'Home!' }}
-      />
-    </HomeStack.Navigator>
-  );
-}
-
-function SettingsStackScreen() {
-  return (
-    <SettingsStack.Navigator>
-      <SettingsStack.Screen
-        name="B"
-        component={B}
-        options={{ tabBarLabel: 'Settings!' }}
-      />
-    </SettingsStack.Navigator>
-  );
-}
 
 export default function App() {
   return (
-    <SafeAreaProvider>
-      <NavigationContainer>     
-        <Tab.Navigator>
-          <Tab.Screen name="Home" component={HomeStackScreen} />
-          <Tab.Screen name="Settings" component={SettingsStackScreen} />
-        </Tab.Navigator> 
-      </NavigationContainer>
-    </SafeAreaProvider>
-    
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home">
+          {() => (
+            <Tab.Navigator initialRouteName="Analytics" >
+              <Tab.Screen name="Analytics" component={Demo} />
+              <Tab.Screen name="Profile" component={Demo} />
+            </Tab.Navigator>
+          )}
+        </Stack.Screen>
+        <Stack.Screen name="Settings" component={Demo} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
