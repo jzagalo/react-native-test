@@ -13,7 +13,8 @@ export default class ListScreen extends Component {
         this.state = { listData: [] }
     }
 
-    async componentDidMount(){         
+    async componentDidMount(){ 
+              
         BackHandler.addEventListener("hardwareBackPress", () => { return true })         
         await AsyncStorage.getItem('restaurants',
                 (err, inRestaurants) => {            
@@ -29,7 +30,7 @@ export default class ListScreen extends Component {
     render(){
         const { listData} = this.state
         const { navigation } = this.props  
-           
+
         const createTwoButtonAlert = (index) => {
             Alert.alert("Please Confirm",
             "Are you sure you want to delete this restaurant?",
@@ -37,36 +38,35 @@ export default class ListScreen extends Component {
                 { text: "Yes", onPress: () => {
                     console.log("Pressed")
                     AsyncStorage.getItem("restaurants",
-                        function(inError, inRestaurants) {
+                         (inError, inRestaurants) => {
                             if(inRestaurants === null){
                                 inRestaurants = []
                             } else {
                                 inRestaurants = JSON.parse(inRestaurants)
                             }
 
-                            for(let i=0; i< inRestaurants.length; i++){
+                            for(let i=0; i < inRestaurants.length; i++){
                                 const restaurant = inRestaurants[i];
                                 if(i === index){
                                     inRestaurants.splice(i, 1);
                                     break;
                                 }
                             }
-
-                            AsyncStorage.setItem("restaurants", 
-                                JSON.stringify(inRestaurants), function(){
-                                    this.setState({ listData: inRestaurants});
+                            
+                            this.setState({ listData: inRestaurants});
+                           /* AsyncStorage.setItem("restaurants", 
+                                JSON.stringify(inRestaurants), () => {                                   
                                     ToastAndroid.show({ 
                                         text: "Restaurant deleted",
                                         position: "bottom", type: "danger",
                                         duration: 2000 
                                     });
-                                }.bind(this)
-                                );
-                                }.bind(this)
-                            );
-                        }},
+                                })
+                        
+                            );*/
+                        }),
                     { text : "No" }, { text : "Cancel", style : "cancel" }
-                ],
+                }}],
                 { cancelable : true }
             )
         };

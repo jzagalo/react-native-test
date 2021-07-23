@@ -82,21 +82,19 @@ function AddScreen({ navigation }){
                             AsyncStorage.getItem('restaurants',
                              (err, inRestaurants) => {
                            
-                            if (inRestaurants === undefined) {
-                                inRestaurants = [];                               
-                            } else {
-                                inRestaurants = JSON.parse(inRestaurants);
-                                inRestaurants.push(result);
-                            }                                   
-                            
-                            
+                                if (inRestaurants === undefined ||inRestaurants === null) {
+                                    inRestaurants = [];                               
+                                } else {
+                                    inRestaurants = JSON.parse(inRestaurants);
+                                    inRestaurants.push(result);
+                                }                        
 
-                            AsyncStorage.setItem("restaurants", JSON.stringify(inRestaurants), () => {                                
-                                navigation.push('ListScreen', {
-                                    data: inRestaurants
-                                })                                                              
-                            })
-                        })             
+                                AsyncStorage.setItem("restaurants", JSON.stringify(inRestaurants), () => {                                
+                                    navigation.push('ListScreen', {
+                                        data: inRestaurants
+                                    })                                                              
+                                })
+                            })             
                         }} />
                 </View>
             </View> 
