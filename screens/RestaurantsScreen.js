@@ -1,13 +1,20 @@
-import * as React from 'react';
-import { View, Text, Button } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import React from 'react'
+import { createStackNavigator } from '@react-navigation/stack'
+import { NavigationContainer } from '@react-navigation/native'
+import ListScreen from "../components/ListScreen"
+import AddScreen from "../components/AddScreen"
 
+const Stack = createStackNavigator();
 
-export function RestaurantsScreen({ navigation}) {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Restaurants Screen</Text>
-      <Button title="Go to Decision"  onPress={() => navigation.push("Decision")}      />
-    </View>
-  );
+export function RestaurantsScreen(){
+  return(
+    
+      <Stack.Navigator headerMode="none" initialRouteName="ListScreen">          
+        <Stack.Screen name="ListScreen" component={ListScreen} />
+        <Stack.Screen name="AddScreen" component={AddScreen}  />
+      </Stack.Navigator>       
+    
+  )
 }
+
+

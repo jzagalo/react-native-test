@@ -1,84 +1,68 @@
 import * as React from 'react';
-import { View, Text, Button, StatusBar, StyleSheet } from 'react-native';
+import { View, Text, Image, Platform } from 'react-native';
 import { NavigationContainer, getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { PeopleScreen } from './screens/PeopleScreen'
 import { DecisionScreen } from './screens/DecisionScreen'
 import { RestaurantsScreen } from './screens/RestaurantsScreen'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import SafeAreaView from 'react-native-safe-area-view';
 
-function getHeaderTitle(route) {
-  // If the focused route is not found, we need to assume it's the initial screen
-  // This can happen during if there hasn't been any navigation inside the screen
-  // In our case, it's "Feed" as that's the first screen inside the navigator
-  const routeName = getFocusedRouteNameFromRoute(route) ?? 'Feed';
 
-  switch (routeName) {
-    case 'Feed':
-      return 'News feed';
-    case 'Profile':
-      return 'My profile';
-    case 'Account':
-      return 'My account';
+const screenOptions = (route, color) => {
+  let iconName = './images/manager.png';
+
+  switch (route.name) {
+    case 'People':
+      iconName = require('./images/manager.png');
+      break;
+    case 'Restaurant':
+      iconName = require('./images/restaurant.png');
+      break;
+    case 'Decision':
+      iconName = require('./images/question-mark.png');
+      break;
+    default:
+      return iconName
   }
-}
 
-function FeedScreen({ navigation }) {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Button
-        title="Go to Settings"
-        onPress={() => navigation.navigate('Settings')}
-      />
-    </View>
-  );
-}
-
-function ProfileScreen() {
-  return <View />;
-}
-
-function AccountScreen() {
-  return <View />;
-}
-
-function SettingsScreen() {
-  return <View />;
-}
+  return <Image source={iconName} style={{ width : 32, height : 32 }} />
+  
+};
 
 const Tab = createBottomTabNavigator();
 
-function HomeTabs() {
+function MyTabs(){
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Feed" component={FeedScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
-      <Tab.Screen name="Account" component={AccountScreen} />
+    <Tab.Navigator screenOptions={({route}) => ({
+      tabBarIcon: ({color}) => screenOptions(route, color),     
+    })}  initialRouteName="Decision" 
+    swipeEnabled="true"
+    backBehavior="none" 
+    tabBarOptions={{ activeTintColor: 'tomato', inactiveTintColor: 'gray',
+    style: {
+      borderTopColor: '#66666666',
+      padding: 5,
+      backgroundColor: 'transparent',
+      elevation: 0,
+    } }}
+     >
+      <Tab.Screen name="People" component={PeopleScreen} />
+      <Tab.Screen name="Decision" component={DecisionScreen} />
+      <Tab.Screen name="Restaurant" component={RestaurantsScreen} />
     </Tab.Navigator>
-  );
+  )
 }
 
 const Stack = createStackNavigator();
 
-export default function App() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Home"
-          component={HomeTabs}
-          options={({ route }) => ({
-            headerTitle: getHeaderTitle(route),
-          })}
-        />
-        <Stack.Screen name="Settings" component={SettingsScreen} />
-      </Stack.Navigator>
+export default function App(){
+  return(
+    <NavigationContainer >
+      <Stack.Navigator>          
+        <Stack.Screen name="Tabs" component={MyTabs} />
+      </Stack.Navigator>       
     </NavigationContainer>
-  );
+  )
 }
-
 
